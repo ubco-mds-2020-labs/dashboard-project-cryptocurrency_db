@@ -8,7 +8,7 @@ In addition, the blockchain technology on which many cryptocurrencies are based,
 
 ### Our role
 
-- 
+- Data Analytics consultancy firm for anaylzing cryptocurrency
 
 ### Target Audience
 
