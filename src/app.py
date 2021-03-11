@@ -54,7 +54,7 @@ app.layout = html.Div(children=
                 ),
         html.Div(
                 [
-                    html.H1('Volume comparison of cryptocurrencies', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
+                    html.H1('Volume comparison of cryptocurrencies', style={'color': '#F79844', 'fontSize': 35, 'text-align': 'center'}),
                     html.Iframe(
                                 id='graph2',
                                 style={'border-width': '0', 'width': '100%', 'height': '400px'}
@@ -65,7 +65,7 @@ app.layout = html.Div(children=
                 ),
         html.Div(
                 [
-                    html.H1('Relation of all cryptocurrencies vs Bitcoin', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
+                    html.H1('Relation of all cryptocurrencies vs Bitcoin', style={'color': '#AF9EEE', 'fontSize': 35, 'text-align': 'center'}),
                     html.Iframe(
                                 id='graph3',
                                 style={'border-width': '0', 'width': '100%', 'height': '400px'}
@@ -84,11 +84,11 @@ app.layout = html.Div(children=
                                 ),
                     html.P('')
                                 
-                ]
+                ], style={'align': 'center'}
                 ),
         html.Div(
                 [
-                    html.H1('Buying Option:', style={'color': 'white', 'fontSize': 35, 'text-align': 'left'}),
+                    html.H1('Buying Option:', style={'color': '#E7E118', 'fontSize': 35, 'text-align': 'left'}),
                                 
                 ]
                 ),
@@ -96,7 +96,7 @@ app.layout = html.Div(children=
                 [
                     html.Div(
                             [
-                                html.H3('Select a cryptocurrency', style={'color': 'white', 'fontSize': 25, 'text-align': 'left'}),
+                                html.H3('Select a cryptocurrency', style={'color': 'white', 'fontSize': 22, 'text-align': 'left'}),
                                 html.Div(
                                         [
                                             dcc.Dropdown(
@@ -107,33 +107,33 @@ app.layout = html.Div(children=
                                             ),
                                         ]
                                         ),
-                                html.H5('How many units would you like to purchase?', style={'color': 'white', 'fontSize': 20}),
+                                html.H5('How many units would you like to purchase?', style={'color': 'white', 'fontSize': 15}),
                                 html.Div(
                                         [
                                             dcc.Input(id='units', 
                                             value=1, 
                                             type='number',
-                                            style={'width': '30%', 'float':'center', 'margin': 12})
+                                            style={'width': '20%', 'float':'center', 'margin': 12})
                                         ]
                                 ),
                             ]),
                     html.Div(
                             [
-                                html.H3('Select your currency', style={'color': 'white', 'fontSize': 25}),
+                                html.H3('Select your currency', style={'color': 'white', 'fontSize': 20}),
                                 dcc.Dropdown(
                                             id='currency-dropdown3',
                                             value=list(usd_exchange_rate.keys())[0],  # REQUIRED to show the plot on the first page load
                                             options=[{'label': k, 'value': k} for k in usd_exchange_rate.keys()],
-                                            style={'width': '40%', 'float':'center', 'margin': 10}
+                                            style={'width': '30%', 'float':'center', 'margin': 10}
                                             ),
                                 html.H5('You will have the pay the below amount in the above currency', 
-                                        style={'color': 'white', 'fontSize': 20}),
+                                        style={'color': 'white', 'fontSize': 15}),
                                 html.Div(id='my-output',
                                          style={'color': 'white', 'fontSize': 25, 'margin': 12})
                             ], className="six columns"),
                 ], className="row")
     ],
-    style={'padding':10}
+    style={'padding':10, 'background': '#111111'}
 )
 
 # Set up callbacks/backend
@@ -163,7 +163,7 @@ def plot_altair2(ycol):
         tooltip=['Name','Volume'],
         ).properties(
         width=1150,
-        height=300)
+        height=300).configure(background='#D9E9F0')
         
     return chart2.to_html()
 
