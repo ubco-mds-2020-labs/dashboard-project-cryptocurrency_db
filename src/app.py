@@ -10,7 +10,9 @@ import dash_bootstrap_components as dbc
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 # Read in global data
+#(Afreen)
 #/Volumes/UBC/Block5/551/Project_MDS/
+#(Akshita)
 #/Users/user/Desktop/
 source1 = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/processed_data/price.csv", index_col=0)
 crypto_usd_df = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/raw_data/crypto_usd.csv")
