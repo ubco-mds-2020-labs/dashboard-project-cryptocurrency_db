@@ -10,10 +10,18 @@ import dash_bootstrap_components as dbc
 
 # Read in global data
 source1 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/price.csv", index_col=0)
+crypto_usd_df = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/raw_data/crypto_usd.csv")
+usd_exchange_rate_df = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/raw_data/usd_exchange_rate.csv")
 #We are not using source2 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/data2.csv", index_col=0)
 source3 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/ExchangeRate.csv")
 source3 = source3[['From Currency','To Currency', 'ExchangeRate']]
 ratings = source1['Name'].unique()
+
+crypto_usd = crypto_usd_df.set_index('CRYPTOCURRENCY').T.to_dict('list')
+crypto_usd = {k:v[0] for k,v in crypto_usd.items()}
+
+usd_exchange_rate = usd_exchange_rate_df.set_index('TO_CURRENCY').T.to_dict('list')
+usd_exchange_rate = {k:v[0] for k,v in usd_exchange_rate.items()}
 
 
 # Setup app and layout/frontend
@@ -59,25 +67,23 @@ app.layout = html.Div(children=
                             [
                                 html.H3('Select a cryptocurrency', style={'color': 'white', 'fontSize': 35, 'margin':25}),
                                 dcc.Dropdown(
-                                            id='FromCurrency',
-                                            value='bitcoin',  # REQUIRED to show the plot on the first page load
-                                            options=[{'label': col, 'value': col} for col in ['bitcoin', 'dash', 'bitcoin_cash', 'bitconnect', 'ethereum',
-                                                                            'iota', 'litecoin', 'monero', 'nem', 'neo', 'numeraire', 'omisego',
-                                                                                'qtum', 'ripple', 'stratis', 'waves']]
+                                            id='currency-dropdown2',
+                                            value= list(crypto_usd.keys())[0],  # REQUIRED to show the plot on the first page load
+                                            options=[{'label': k, 'value': k} for k in crypto_usd.keys()]
                                             ),
                                 html.H4('How many units would you like to purchase?', style={'color': 'white', 'fontSize': 20, 'margin':25}),
-                                dcc.Input(id='widget-1', type="number")
+                                dcc.Input(id='units', value=1, type='number')
                             ], className="six columns"),
                     html.Div(
                             [
                                 html.H3('Select your currency', style={'color': 'white', 'fontSize': 35, 'margin':25}),
                                 dcc.Dropdown(
-                                            id='ToCurrency',
-                                            value='CAD',  # REQUIRED to show the plot on the first page load
-                                            options=[{'label': col, 'value': col} for col in ['CAD', 'CNY', 'INR', 'USD', 'YEN']]
+                                            id='currency-dropdown3',
+                                            value=list(usd_exchange_rate.keys())[0],  # REQUIRED to show the plot on the first page load
+                                            options=[{'label': k, 'value': k} for k in usd_exchange_rate.keys()]
                                             ),
                                 html.H4('You will have to pay the below amount in the above currency', style={'color': 'white', 'fontSize': 20, 'margin':25}),
-                                dcc.Textarea(id='widget-2')
+                                html.Div(id='my-output')
                             ], className="six columns"),
                 ], className="row")
     ]
@@ -114,6 +120,15 @@ def plot_altair2(ycol):
         
     return chart2.to_html()
 
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    [Input(component_id='currency-dropdown2', component_property='value'),
+    Input(component_id='currency-dropdown3', component_property='value'),
+    Input(component_id='units', component_property='value')]
+)
+def update_output_div(crypto_name, curr_name, units):
+    total_cost = round(float(crypto_usd[crypto_name]) * float(usd_exchange_rate[curr_name]) * float(units),1)
+    return 'Total Cost: {}'.format(total_cost)
 
 
 
