@@ -7,14 +7,15 @@ import altair as alt
 import pandas as pd
 import dash_bootstrap_components as dbc
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 # Read in global data
 source1 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/price.csv", index_col=0)
 crypto_usd_df = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/raw_data/crypto_usd.csv")
 usd_exchange_rate_df = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/raw_data/usd_exchange_rate.csv")
-#We are not using source2 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/data2.csv", index_col=0)
-source3 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/ExchangeRate.csv")
-source3 = source3[['From Currency','To Currency', 'ExchangeRate']]
+source3 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/data3.csv")
+#source3 = pd.read_csv("/Volumes/UBC/Block5/551/Project_MDS/dashboard-project-cryptocurrency_db/ExchangeRate.csv")
+#source3 = source3[['From Currency','To Currency', 'ExchangeRate']]
 ratings = source1['Name'].unique()
 
 crypto_usd = crypto_usd_df.set_index('CRYPTOCURRENCY').T.to_dict('list')
@@ -27,7 +28,6 @@ usd_exchange_rate = {k:v[0] for k,v in usd_exchange_rate.items()}
 # Setup app and layout/frontend
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# Plot static graphs here
 
 
 alt.data_transformers.disable_max_rows()
@@ -36,23 +36,26 @@ app.layout = html.Div(children=
     [
         html.Div(
                 [
-                    html.H1('Cryptocurrency Reporting Dashboard', style={'color': 'white', 'fontSize': 35}),
+                    html.H1('Cryptocurrency Reporting Dashboard', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
                     dcc.Dropdown(
-                                id='ycol-widget',
+                                id='ycol-widget', 
+                                style={'float':'left', 'width': '40%'},
                                 value='Close',  # REQUIRED to show the plot on the first page load
                                 options=[{'label': col, 'value': col} for col in ['Open','Close','High','Low']]
                                 ),
-                    html.Iframe(
+                    html.Div(children=
+                            [
+                                html.Iframe(
                                 id='graph1',
-                                style={'border-width': '0', 'width': '100%', 'height': '400px'}
+                                style={'border-width': '0', 'width': '100%', 'height': '400px', 'float':'right'}
                                 ),
-                    html.P('')
+                            ])   
                                 
                 ]
                 ),
         html.Div(
                 [
-                    html.H1('Volume comparison of cryptocurrencies', style={'color': 'white', 'fontSize': 35}),
+                    html.H1('Volume comparison of cryptocurrencies', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
                     html.Iframe(
                                 id='graph2',
                                 style={'border-width': '0', 'width': '100%', 'height': '400px'}
@@ -63,30 +66,63 @@ app.layout = html.Div(children=
                 ),
         html.Div(
                 [
+                    html.H1('Correlation of cryptocurrencies', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
+                    html.Iframe(
+                                id='graph3',
+                                style={'border-width': '0', 'width': '100%', 'height': '400px'}
+                                ),
+                    html.P('')
+                                
+                ]
+                ),
+        html.Div(
+                [
+                    html.H1('Buying Option:', style={'color': 'white', 'fontSize': 35, 'text-align': 'left'}),
+                                
+                ]
+                ),
+        html.Div(
+                [
                     html.Div(
                             [
-                                html.H3('Select a cryptocurrency', style={'color': 'white', 'fontSize': 35, 'margin':25}),
-                                dcc.Dropdown(
+                                html.H3('Select a cryptocurrency', style={'color': 'white', 'fontSize': 25, 'text-align': 'left'}),
+                                html.Div(
+                                        [
+                                            dcc.Dropdown(
                                             id='currency-dropdown2',
                                             value= list(crypto_usd.keys())[0],  # REQUIRED to show the plot on the first page load
-                                            options=[{'label': k, 'value': k} for k in crypto_usd.keys()]
+                                            options=[{'label': k, 'value': k} for k in crypto_usd.keys()],
+                                            style={'width': '50%', 'float':'center', 'margin': 10}
                                             ),
-                                html.H4('How many units would you like to purchase?', style={'color': 'white', 'fontSize': 20, 'margin':25}),
-                                dcc.Input(id='units', value=1, type='number')
-                            ], className="six columns"),
+                                        ]
+                                        ),
+                                html.H5('How many units would you like to purchase?', style={'color': 'white', 'fontSize': 20}),
+                                html.Div(
+                                        [
+                                            dcc.Input(id='units', 
+                                            value=1, 
+                                            type='number',
+                                            style={'width': '30%', 'float':'center', 'margin': 12})
+                                        ]
+                                ),
+                            ]),
                     html.Div(
                             [
-                                html.H3('Select your currency', style={'color': 'white', 'fontSize': 35, 'margin':25}),
+                                html.H3('Select your currency', style={'color': 'white', 'fontSize': 25}),
                                 dcc.Dropdown(
                                             id='currency-dropdown3',
                                             value=list(usd_exchange_rate.keys())[0],  # REQUIRED to show the plot on the first page load
-                                            options=[{'label': k, 'value': k} for k in usd_exchange_rate.keys()]
+                                            options=[{'label': k, 'value': k} for k in usd_exchange_rate.keys()],
+                                            style={'width': '40%', 'float':'center', 'margin': 10}
                                             ),
-                                html.H4('You will have to pay the below amount in the above currency', style={'color': 'white', 'fontSize': 20, 'margin':25}),
-                                html.Div(id='my-output')
+                                html.H5('You will have the pay the below amount in the above currency', 
+                                        style={'color': 'white', 'fontSize': 20}),
+                                html.Div(id='my-output',
+                                         style={'color': 'white', 'fontSize': 25, 'margin': 12})
                             ], className="six columns"),
                 ], className="row")
-    ]
+    ],
+    style={'padding':10}
 )
 
 # Set up callbacks/backend
@@ -130,7 +166,21 @@ def update_output_div(crypto_name, curr_name, units):
     total_cost = round(float(crypto_usd[crypto_name]) * float(usd_exchange_rate[curr_name]) * float(units),1)
     return 'Total Cost: {}'.format(total_cost)
 
-
+@app.callback(
+    Output('graph3', 'srcDoc'),
+    Input('ycol-widget', 'value'))
+def plot_altair3(ycol):
+    chart3 = alt.Chart(source3).mark_point(size=2, opacity=0.2).encode(
+        alt.X(alt.repeat("column"), type='quantitative',scale=alt.Scale(zero=False)),
+        alt.Y(alt.repeat("row"), type='quantitative',scale=alt.Scale(zero=False)),
+        ).properties(
+            width=55,
+            height=55
+        ).repeat(
+            row=['waves_MAvg_Close', 'Bitcoin_MAvg_Close' ,'nem_MAvg_Close'],
+            column=['nem_MAvg_Close', 'Bitcoin_MAvg_Close' ,'waves_MAvg_Close']
+            ).configure_axis(labelFontSize=7, titleFontSize=7)
+    return chart3.to_html()
 
 
 
