@@ -36,7 +36,9 @@ app.layout = html.Div(children=
     [
         html.Div(
                 [
-                    html.H1('Cryptocurrency Reporting Dashboard', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
+                    html.H1('Cryptocurrency Reporting Dashboard', style={'color': '#04EFB2', 'fontSize': 35, 'text-align': 'center'}),
+                    html.P('Cryptocurrency is a form of payment that can be exchanged online for goods and services. Many companies have issued their own currencies, often called tokens, and these can be traded specifically for the good or service that the company provides. Think of them as you would arcade tokens or casino chips. You’ll need to exchange real currency for the cryptocurrency to access the good or service. Cryptocurrencies work using a technology called blockchain. Blockchain is a decentralized technology spread across many computers that manages and records transactions. Part of the appeal of this technology is its security.',
+                    style={'color': 'white', 'fontSize': 15, 'text-align': 'center'}),
                     dcc.Dropdown(
                                 id='ycol-widget', 
                                 style={'float':'left', 'width': '40%'},
@@ -66,9 +68,21 @@ app.layout = html.Div(children=
                 ),
         html.Div(
                 [
-                    html.H1('Correlation of cryptocurrencies', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
+                    html.H1('Relation of all cryptocurrencies vs Bitcoin', style={'color': 'white', 'fontSize': 35, 'text-align': 'center'}),
                     html.Iframe(
                                 id='graph3',
+                                style={'border-width': '0', 'width': '100%', 'height': '400px'}
+                                ),
+                    html.Iframe(
+                                id='graph4',
+                                style={'border-width': '0', 'width': '100%', 'height': '400px'}
+                                ),
+                    html.Iframe(
+                                id='graph5',
+                                style={'border-width': '0', 'width': '100%', 'height': '400px'}
+                                ),
+                    html.Iframe(
+                                id='graph6',
                                 style={'border-width': '0', 'width': '100%', 'height': '400px'}
                                 ),
                     html.P('')
@@ -138,7 +152,7 @@ def plot_altair(ycol):
         width=1250,
         height=300).add_selection(
         brush
-        )
+        ).configure(background='#D9E9F0')
     return chart.to_html()
 
 @app.callback(
@@ -170,17 +184,71 @@ def update_output_div(crypto_name, curr_name, units):
     Output('graph3', 'srcDoc'),
     Input('ycol-widget', 'value'))
 def plot_altair3(ycol):
-    chart3 = alt.Chart(source3).mark_point(size=2, opacity=0.2).encode(
+    chart3 = alt.Chart(source3).mark_circle(size=4, opacity=0.8).encode(
         alt.X(alt.repeat("column"), type='quantitative',scale=alt.Scale(zero=False)),
         alt.Y(alt.repeat("row"), type='quantitative',scale=alt.Scale(zero=False)),
         ).properties(
-            width=55,
-            height=55
-        ).repeat(
-            row=['waves_MAvg_Close', 'Bitcoin_MAvg_Close' ,'nem_MAvg_Close'],
-            column=['nem_MAvg_Close', 'Bitcoin_MAvg_Close' ,'waves_MAvg_Close']
+            width=250,
+            height=250
+            ).repeat(
+                row=['bitcoin_MAvg_Close'],
+                column=['bitcoin_cash_MAvg_Close',
+       'bitconnect_MAvg_Close', 'dash_MAvg_Close', 'ethereum_MAvg_Close',
+       ]
             ).configure_axis(labelFontSize=7, titleFontSize=7)
     return chart3.to_html()
+
+@app.callback(
+    Output('graph4', 'srcDoc'),
+    Input('ycol-widget', 'value'))
+def plot_altair4(ycol):
+    chart4 = alt.Chart(source3).mark_circle(size=4, opacity=0.8).encode(
+        alt.X(alt.repeat("column"), type='quantitative',scale=alt.Scale(zero=False)),
+        alt.Y(alt.repeat("row"), type='quantitative',scale=alt.Scale(zero=False)),
+        ).properties(
+            width=250,
+            height=250
+            ).repeat(
+                row=['bitcoin_MAvg_Close'],
+                column=[
+       'ethereum_classic_MAvg_Close', 'iota_MAvg_Close', 'litecoin_MAvg_Close',
+       'monero_MAvg_Close']
+            ).configure_axis(labelFontSize=7, titleFontSize=7)
+    return chart4.to_html()
+
+@app.callback(
+    Output('graph5', 'srcDoc'),
+    Input('ycol-widget', 'value'))
+def plot_altair5(ycol):
+    chart5 = alt.Chart(source3).mark_circle(size=4, opacity=0.8).encode(
+        alt.X(alt.repeat("column"), type='quantitative',scale=alt.Scale(zero=False)),
+        alt.Y(alt.repeat("row"), type='quantitative',scale=alt.Scale(zero=False)),
+        ).properties(
+            width=250,
+            height=250
+            ).repeat(
+                row=['bitcoin_MAvg_Close'],
+                column=['nem_MAvg_Close', 'neo_MAvg_Close',
+       'numeraire_MAvg_Close', 'omisego_MAvg_Close']
+            ).configure_axis(labelFontSize=7, titleFontSize=7)
+    return chart5.to_html()
+
+@app.callback(
+    Output('graph6', 'srcDoc'),
+    Input('ycol-widget', 'value'))
+def plot_altair6(ycol):
+    chart6 = alt.Chart(source3).mark_circle(size=4, opacity=0.8).encode(
+        alt.X(alt.repeat("column"), type='quantitative',scale=alt.Scale(zero=False)),
+        alt.Y(alt.repeat("row"), type='quantitative',scale=alt.Scale(zero=False)),
+        ).properties(
+            width=250,
+            height=250
+            ).repeat(
+                row=['bitcoin_MAvg_Close'],
+                column=['qtum_MAvg_Close',
+       'ripple_MAvg_Close', 'stratis_MAvg_Close', 'waves_MAvg_Close']
+            ).configure_axis(labelFontSize=7, titleFontSize=7)
+    return chart6.to_html()
 
 
 

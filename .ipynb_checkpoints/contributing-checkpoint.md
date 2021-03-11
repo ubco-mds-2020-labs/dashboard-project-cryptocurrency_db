@@ -15,6 +15,17 @@ Point form is fine, but you should use the following format:
 4. Work on wireframe (sample design)
 5. Work on readme
 
+#### Milestone 2
+1. Research on dashboards
+2. App layout
+3. Timeseries graph
+4. Bar graph
+5. Relationship graph
+6. Currency conversion
+7. Customization of the dashboard
+8. Styling of the dashboard
+
+
 
 ## Contributions
 
@@ -28,6 +39,13 @@ Point form is fine, but you should use the following format:
 - Work on wireframe
 - Work on readme
 
+#### Milestone 2
+- Research on dashboards
+- App layout
+- Timeseries graph
+- Styling of the dashboard
+- Wrangling
+
 
 
 ### Akshita's Role
@@ -39,6 +57,16 @@ Point form is fine, but you should use the following format:
 - Exploration on data and what machine learning model can we apply on the data
 - Work on wireframe
 
+#### Milestone 2
+- Research on dashboards
+- Bar graph
+- Relationship graph
+- Currency conversion
+- Customization of the dashboard
+- Work on dropdowns
+- Wrangling
+
+
 
 
 
@@ -47,6 +75,9 @@ Point form is fine, but you should use the following format:
 #### Milestone 1
 - We spent most of the time on the research of the dashboard and the target audience. We stuck to our goals and were aligned with the amount of the required to spend on the project
 
+#### Milestone 2
+- We were comfortable with the dataset, and build a basic dashboard for audience who are interested in exploring the cryptoworld. We had to perform a lot of wrangling to make sure the data adjusts the graph (instead of graph adjusting the data)
+
 
 
 
@@ -54,3 +85,5 @@ Point form is fine, but you should use the following format:
 
 #### Milestone 1
 - We are concerned about the performance of the dashboard and our ability to create it on time. We may have to extend our working hours on the project
+- We are working with larger dataset, so it has slowed down our dashboard
+- We didn't have a template to work with so we tried creating our own
