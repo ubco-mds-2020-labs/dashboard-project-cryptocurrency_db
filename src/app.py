@@ -14,10 +14,10 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #/Volumes/UBC/Block5/551/Project_MDS/
 #(Akshita)
 #/Users/user/Desktop/
-source1 = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/processed_data/price.csv", index_col=0)
-crypto_usd_df = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/raw_data/crypto_usd.csv")
-usd_exchange_rate_df = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/raw_data/usd_exchange_rate.csv")
-source3 = pd.read_csv("/Users/user/Desktop/dashboard-project-cryptocurrency_db/data/processed_data/data3.csv")
+source1 = pd.read_csv("/data/processed_data/price.csv", index_col=0)
+crypto_usd_df = pd.read_csv("/data/raw_data/crypto_usd.csv")
+usd_exchange_rate_df = pd.read_csv("/data/raw_data/usd_exchange_rate.csv")
+source3 = pd.read_csv("/data/processed_data/data3.csv")
 
 crypto_usd = crypto_usd_df.set_index('CRYPTOCURRENCY').T.to_dict('list')
 crypto_usd = {k:v[0] for k,v in crypto_usd.items()}
